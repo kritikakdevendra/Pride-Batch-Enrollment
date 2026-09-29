@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pride Batch Enrollment</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f4f6fb;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px 12px 50px;color:#22304a}
+.shell{width:100%;max-width:460px}
+.brand{display:flex;align-items:center;gap:10px;justify-content:center;margin:6px 0 16px}
+.logo{width:44px;height:44px;border-radius:12px;background:#13294B;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:22px}
+.brand h1{font-size:19px;color:#13294B;font-weight:700}
+.brand span{font-size:10px;font-weight:700;color:#2C5282;letter-spacing:1.4px;text-transform:uppercase;display:block}
+.prog{display:flex;gap:4px;margin-bottom:16px}
+.prog i{flex:1;height:5px;border-radius:6px;background:#e6e9f0;display:block}
+.prog i.on{background:#13294B}
+.card{background:#fff;border-radius:16px;padding:24px 20px;box-shadow:0 4px 22px rgba(19,41,75,.1);border:1px solid #e6e9f0;margin-bottom:10px}
+.stag{font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#2C5282;margin-bottom:6px}
+.card h2{font-size:21px;color:#13294B;font-weight:700;line-height:1.2}
+.sub{color:#6b7689;font-size:13px;margin-top:6px;line-height:1.5}
+label{display:block;font-weight:600;font-size:13px;color:#13294B;margin:14px 0 5px}
+input,textarea{width:100%;padding:13px;border:1.6px solid #e6e9f0;border-radius:11px;font-family:Arial,sans-serif;font-size:15px;color:#22304a;background:#fff}
+input:focus,textarea:focus{outline:2px solid #2C5282;border-color:#2C5282}
+input::placeholder,textarea::placeholder{color:#aab1c0}
+textarea{resize:vertical;min-height:80px}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;cursor:pointer;font-family:Arial,sans-serif;font-weight:700;font-size:15px;margin-top:16px;background:#13294B;color:#fff}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.g{background:#fff;color:#13294B;border:1.6px solid #e6e9f0;margin-top:9px}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.opt{display:flex;align-items:center;gap:12px;padding:13px;border:1.6px solid #e6e9f0;border-radius:12px;cursor:pointer;background:#fff}
+.opt.s,.opt:hover{border-color:#2C5282;background:#e6ecf5}
+.opt .ic{width:38px;height:38px;border-radius:9px;background:#f4f6fb;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.opt.s .ic{background:#2C5282}
+.opt .t{font-weight:700;font-size:13.5px;color:#13294B}
+.opt .d{font-size:11.5px;color:#6b7689;margin-top:2px}
+.opt .ck{margin-left:auto;width:20px;height:20px;border-radius:50%;border:2px solid #ddd;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
+.opt.s .ck{background:#2C5282;border-color:#2C5282}
+.tc{display:flex;gap:10px;padding:13px;border:1.6px solid #e6e9f0;border-radius:12px;cursor:pointer;background:#fff;margin-top:8px}
+.tc.s,.tc:hover{border-color:#2C5282;background:#e6ecf5}
+.tc .ti{width:32px;height:32px;border-radius:8px;background:#f4f6fb;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;margin-top:2px}
+.tc.s .ti{background:#2C5282}
+.tc .tn{font-weight:700;font-size:13.5px;color:#13294B}
+.tc .ck{margin-left:auto;width:19px;height:19px;border-radius:50%;border:2px solid #ddd;flex-shrink:0;margin-top:3px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff}
+.tc.s .ck{background:#2C5282;border-color:#2C5282}
+.bat{border:1.6px solid #e6e9f0;border-radius:13px;padding:14px;cursor:pointer;background:#fff;margin-top:9px}
+.bat.s,.bat:hover{border-color:#2C5282;background:#e6ecf5}
+.bat .r1{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.bat .bt{font-weight:800;font-size:14px;color:#13294B}
+.bat .meta{font-size:12px;color:#6b7689;margin-top:4px;line-height:1.6}
+.bat .meta b{color:#22304a;font-weight:600}
+.pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:16px;white-space:nowrap}
+.pill.o{background:#e2efda;color:#1f7a3d}
+.pill.f{background:#fff2cc;color:#9a6700}
+.pat{display:inline-block;font-size:9px;font-weight:800;color:#2C5282;background:#e6ecf5;padding:2px 7px;border-radius:4px;margin-left:5px;vertical-align:middle}
+.seats{font-size:11px;font-weight:600;margin-top:8px}
+.bar{height:5px;border-radius:5px;background:#e6e9f0;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:#13294B}
+.load{display:flex;flex-direction:column;align-items:center;padding:24px 0;gap:12px;color:#6b7689;font-size:13px}
+.spin{width:34px;height:34px;border:3px solid #e6e9f0;border-top-color:#2C5282;border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.emp{text-align:center;padding:10px 4px}
+.emp .ej{font-size:38px;margin-bottom:8px}
+.emp h3{color:#13294B;font-size:18px;margin-bottom:5px}
+.emp p{color:#6b7689;font-size:13px;line-height:1.5}
+.sm{margin-top:15px;border:1.6px solid #e6e9f0;border-radius:13px;overflow:hidden}
+.sm .ln{display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid #e6e9f0;font-size:13px;gap:10px}
+.sm .ln:last-child{border-bottom:none}
+.sm .ln span{color:#6b7689}
+.sm .ln b{color:#13294B;font-weight:700;text-align:right}
+.suc{text-align:center;padding:12px 6px}
+.tick{width:68px;height:68px;border-radius:50%;background:#e2efda;color:#1f7a3d;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 14px}
+.tick.bl{background:#e6ecf5;color:#2C5282}
+.code{display:inline-block;background:#13294B;color:#fff;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:9px;margin-top:12px;font-size:13px}
+.wn{font-size:12.5px;color:#6b7689;margin-top:13px;line-height:1.5}
+.err{color:#d6334a;font-size:12px;font-weight:600;margin-top:5px;display:none}
+.err.show{display:block}
+.foot{text-align:center;font-size:11px;color:#9aa3b5;margin-top:20px}
+.bk{display:inline-flex;align-items:center;gap:4px;color:#6b7689;font-size:12.5px;font-weight:600;cursor:pointer;margin-bottom:6px}
+.ai-hint{color:#aab1c0;font-size:12px;margin-top:6px;line-height:1.6;padding:8px 12px;background:#f8f9fc;border-radius:8px;border:1px dashed #dde2ee}
+</style>
+</head>
+<body>
+<div class="shell">
+<div class="brand">
+  <div class="logo">P</div>
+  <div><span>PRIDE COMPUTER EDUCATION</span><h1>Batch Enrollment</h1></div>
+</div>
+<div class="prog" id="pg"><i></i><i></i><i></i><i></i><i></i></div>
+<div id="app"></div>
+<div class="foot">Learn. Skill. Earn.</div>
+</div>
+<script>
+var BRANCH_URLS = {
+  'vileparle':  'https://script.google.com/macros/s/AKfycbx_HEhQZftoJeHwqY-hrcvaRNHKyI2dWD1ujNsgAnLRwbd8oSWlc12_fwzdJilFp2qT/exec',
+  'andheri':    'https://script.google.com/macros/s/AKfycbyrSDlIVja4Iq_CWS-dAqEJe26-dI1eakG1joRXgPw6k6MsxOgmUloEFJQLTnKIvH2E/exec',
+  'jogeshwari': 'https://script.google.com/macros/s/AKfycbxAn7KdMxbOPY5B-yUcNAd-2AnRmwrClJlAdL9VuGrG8p7wbcyyyBA8U5VIHyoh6rztEA/exec',
+  'santacruz':  'https://script.google.com/macros/s/AKfycbygAbEQBvGeu1ZNZ47QfnVT74mkyz7eE8HjlQ8vWes284lLrr4rZxopaPYYbZBnVilN/exec',
+  'goregaon':   'https://script.google.com/macros/s/AKfycbz3AP0fzbPTURgEdAiqhg04bx9C7YRYpKybaHIovtqLgPEO27HVKeh3cZYmRxgNmggw/exec'
+};
+
+var BRANCHES = [
+  {key:'vileparle', label:'Vile Parle', ic:'🏫'},
+  {key:'andheri',   label:'Andheri',   ic:'🏢'},
+  {key:'jogeshwari',label:'Jogeshwari',ic:'🏬'},
+  {key:'santacruz', label:'Santacruz', ic:'🏛️'},
+  {key:'goregaon',  label:'Goregaon',  ic:'🏤'}
+];
+
+// Each course: key, label, ic, about, topics[]
+// Each topic: key, label
+var COURSES = [
+  {key:'oa',label:'Office Automation (OA)',ic:'🖥️',about:'Word · Excel · PowerPoint',
+   topics:[{key:'ms-word',label:'Ms Word'},{key:'ms-excel',label:'Ms Excel'},{key:'ms-ppt',label:'Ms PowerPoint'}]},
+  {key:'tally',label:'Tally',ic:'🧾',about:'Operating · Advance · GST',
+   topics:[{key:'tally-op',label:'Tally Operating'},{key:'tally-adv',label:'Tally Advance'},{key:'tally-gst',label:'Tally GST'}]},
+  {key:'adv-excel',label:'Advance Excel',ic:'📈',about:'VLOOKUP · Pivot · Macros',
+   topics:[{key:'adv-excel',label:'Advance Excel'}]},
+  {key:'graphic',label:'Graphic Designing',ic:'🎨',about:'CorelDraw · Photoshop · Illustrator · Indesign',
+   topics:[{key:'coreldraw',label:'CorelDraw'},{key:'photoshop',label:'Photoshop'},{key:'illustrator',label:'Illustrator'},{key:'indesign',label:'Indesign'}]},
+  {key:'web',label:'Web Designing',ic:'💻',about:'HTML & CSS · JavaScript · WordPress',
+   topics:[{key:'html-css',label:'HTML & CSS'},{key:'javascript',label:'JavaScript'},{key:'wordpress',label:'WordPress'}]},
+  {key:'digital',label:'Digital Marketing',ic:'📣',about:'SEO · SEM · SMM',
+   topics:[{key:'seo',label:'SEO'},{key:'sem',label:'SEM'},{key:'smm',label:'SMM'}]},
+  {key:'sound-edit',label:'Sound Editing',ic:'🎵',about:'Audio editing & mixing',
+   topics:[{key:'sound-edit',label:'Sound Editing'}]},
+  {key:'video-edit',label:'Video Editing',ic:'🎬',about:'Reels, YouTube, films',
+   topics:[{key:'video-edit',label:'Video Editing'}]},
+  {key:'dfa',label:'DFA — Diploma Financial Accounting',ic:'📋',about:'OA + Tally + Excel + Tax + AI + Personality',
+   topics:[{key:'ms-word',label:'Ms Word'},{key:'ms-excel',label:'Ms Excel'},{key:'ms-ppt',label:'Ms PowerPoint'},
+           {key:'tally-op',label:'Tally Operating'},{key:'tally-adv',label:'Tally Advance'},{key:'tally-gst',label:'Tally GST'},
+           {key:'adv-excel',label:'Advance Excel'},{key:'ai-acc',label:'AI for Accountants'},
+           {key:'direct-tax',label:'Direct Taxation'},{key:'indirect-tax',label:'Indirect Taxation'},
+           {key:'personality',label:'Personality Development'}]},
+  {key:'dit',label:'DIT — Diploma in IT',ic:'💡',about:'OA + AI + Excel + Tally + Graphic + Web',
+   topics:[{key:'ms-word',label:'Ms Word'},{key:'ms-excel',label:'Ms Excel'},{key:'ms-ppt',label:'Ms PowerPoint'},
+           {key:'ai-it',label:'AI for IT'},{key:'adv-excel',label:'Advance Excel'},{key:'tally-op',label:'Tally Operating'},
+           {key:'coreldraw',label:'CorelDraw'},{key:'photoshop',label:'Photoshop'},
+           {key:'html-css',label:'HTML & CSS'},{key:'javascript',label:'JavaScript'},{key:'wordpress',label:'WordPress'},
+           {key:'personality',label:'Personality Development'}]},
+  {key:'ddm',label:'DDM — Diploma Digital Media',ic:'🎥',about:'Graphic + Web + Video + Digital Marketing',
+   topics:[{key:'coreldraw',label:'CorelDraw'},{key:'photoshop',label:'Photoshop'},{key:'illustrator',label:'Illustrator'},
+           {key:'indesign',label:'Indesign'},{key:'html-css',label:'HTML & CSS'},{key:'javascript',label:'JavaScript'},
+           {key:'wordpress',label:'WordPress'},{key:'video-edit',label:'Video Editing'},{key:'sound-edit',label:'Sound Editing'},
+           {key:'ai-dm',label:'AI in Digital Marketing'},{key:'seo',label:'SEO'},{key:'sem',label:'SEM'},{key:'smm',label:'SMM'}]},
+  {key:'data-analytics',label:'Data Analytics',ic:'📊',about:'Excel · Power BI · Tableau · Python · R',
+   topics:[{key:'ms-excel',label:'Excel'},{key:'adv-excel',label:'Advance Excel'},{key:'auto-dashboard',label:'Auto Dashboards'},
+           {key:'powerbi',label:'Power BI'},{key:'tableau',label:'Tableau'},{key:'mysql',label:'My SQL'},
+           {key:'python',label:'Python'},{key:'r-prog',label:'R Programming'},{key:'seaborn',label:'Seaborn'}]},
+  {key:'data-science',label:'Data Science',ic:'🤖',about:'Python Libraries · ML · Deep Learning',
+   topics:[{key:'numpy',label:'Numpy'},{key:'pandas',label:'Pandas'},{key:'matplotlib',label:'Matplotlib'},
+           {key:'ml-sup',label:'ML Supervised'},{key:'ml-unsup',label:'ML Unsupervised'},{key:'ml-reinf',label:'ML Reinforcement'},
+           {key:'tensorflow',label:'TensorFlow'},{key:'neural-net',label:'Neural Network Processing'}]},
+  {key:'gen-ai',label:'Generative AI',ic:'✨',about:'ChatGPT · Gemini · AI Tools',
+   topics:[{key:'gen-ai',label:'Generative AI'}]},
+  {key:'vfx',label:'VFX',ic:'🎬',about:'Visual Effects',topics:[{key:'vfx',label:'VFX'}]},
+  {key:'dsp',label:'DSP — Diploma Software Programming',ic:'💻',about:'C/C++ · MERN · Java · Data Analytics',
+   topics:[{key:'c-prog',label:'C Programming'},{key:'cpp',label:'C++'},{key:'data-struct',label:'Data Structure'},
+           {key:'mysql',label:'My SQL'},{key:'python',label:'Python'},{key:'mongodb',label:'MongoDB'},
+           {key:'express-js',label:'Express JS'},{key:'react-js',label:'React JS'},{key:'php',label:'PHP'},
+           {key:'angular',label:'Angular 10'},{key:'node-js',label:'Node JS'},{key:'javascript',label:'JavaScript'},
+           {key:'core-java',label:'Core Java'},{key:'adv-java',label:'Advance Java'},
+           {key:'adv-excel',label:'Advance Excel'},{key:'auto-dashboard',label:'Auto Dashboards'},
+           {key:'powerbi',label:'Power BI'},{key:'tableau',label:'Tableau'},{key:'seaborn',label:'Seaborn'},{key:'r-prog',label:'R Programming'}]},
+  {key:'python',label:'Python',ic:'🐍',about:'Programming + Data',topics:[{key:'python',label:'Python'}]},
+  {key:'c-prog',label:'C Programming',ic:'⚙️',about:'Programming basics',topics:[{key:'c-prog',label:'C Programming'}]},
+  {key:'cpp',label:'C++',ic:'⚙️',about:'OOP concepts',topics:[{key:'cpp',label:'C++'}]},
+  {key:'core-java',label:'Core Java',ic:'☕',about:'Java basics',topics:[{key:'core-java',label:'Core Java'}]},
+  {key:'adv-java',label:'Advance Java',ic:'☕',about:'Servlets, Spring',topics:[{key:'adv-java',label:'Advance Java'}]},
+  {key:'php',label:'PHP',ic:'🌐',about:'Server-side web',topics:[{key:'php',label:'PHP'}]},
+  {key:'react-js',label:'React JS',ic:'⚛️',about:'Frontend UI',topics:[{key:'react-js',label:'React JS'}]},
+  {key:'node-js',label:'Node JS',ic:'🟢',about:'Backend JS',topics:[{key:'node-js',label:'Node JS'}]},
+  {key:'powerbi',label:'Power BI',ic:'📊',about:'BI Dashboards',topics:[{key:'powerbi',label:'Power BI'}]},
+  {key:'tableau',label:'Tableau',ic:'📊',about:'Visual analytics',topics:[{key:'tableau',label:'Tableau'}]},
+  {key:'mysql',label:'My SQL',ic:'🗄️',about:'Database',topics:[{key:'mysql',label:'My SQL'}]},
+  {key:'direct-tax',label:'Direct Taxation',ic:'📄',about:'Income tax, TDS',topics:[{key:'direct-tax',label:'Direct Taxation'}]},
+  {key:'indirect-tax',label:'Indirect Taxation',ic:'📄',about:'GST, customs',topics:[{key:'indirect-tax',label:'Indirect Taxation'}]},
+  {key:'personality',label:'Personality Development',ic:'🌟',about:'Communication skills',topics:[{key:'personality',label:'Personality Development'}]},
+  {key:'business-mgmt',label:'Business Management',ic:'💼',about:'Strategy, management',topics:[{key:'business-mgmt',label:'Business Management'}]},
+  {key:'sharemarket',label:'Share Market',ic:'📈',about:'Stock trading',topics:[{key:'sharemarket',label:'Share Market'}]},
+  {key:'hardware',label:'Hardware',ic:'🖥️',about:'Computer hardware',topics:[{key:'hardware',label:'Hardware'}]},
+  {key:'autocad',label:'AutoCAD',ic:'📐',about:'2D/3D design',topics:[{key:'autocad',label:'AutoCAD'}]},
+  {key:'ai-tools',label:'AI Tools',ic:'🤖',about:'ChatGPT · Gemini · Canva AI...',isAI:true,topics:[]},
+  {key:'other',label:'Other Course',ic:'🎓',about:'Jo list mein nahi',isOther:true,topics:[]}
+];
+
+// App state
+var S = {
+  step:0, name:'', mobile:'', branch:'', branchLabel:'',
+  courseKey:'', topicKey:'', topicLabel:'', courseLabel:'',
+  customCourse:'', customTopic:'', aiTool:'',
+  batches:null, batchId:'', comment:''
+};
+
+var app = document.getElementById('app');
+
+function pg(){
+  var el=document.getElementById('pg'); var html='';
+  var active=Math.min(S.step,4);
+  for(var i=0;i<5;i++) html+='<i'+(i<=active?' class="on"':'')+'></i>';
+  el.innerHTML=html;
+}
+
+function go(n){ S.step=n; render(); }
+
+function render(){
+  pg();
+  if(S.step===0) return sVerify();
+  if(S.step===1) return sBranch();
+  if(S.step===2) return sCourse();
+  if(S.step===3) return sTopic();
+  if(S.step===4) return sBatches();
+  if(S.step===5) return sConfirm();
+  if(S.step===6) return sSuccess();
+  if(S.step===7) return sNoBatch();
+  if(S.step===8) return sDone();
+}
+
+function getCourse(k){
+  for(var i=0;i<COURSES.length;i++) if(COURSES[i].key===k) return COURSES[i];
+  return {label:'',topics:[],ic:'🎓',about:''};
+}
+
+function branchUrl(){ return BRANCH_URLS[S.branch]||''; }
+function isLive(){ var u=branchUrl(); return u && u.indexOf('PASTE')===-1; }
+
+// STEP 0 — VERIFY
+function sVerify(){
+  app.innerHTML='<div class="card">'
+    +'<div class="stag">Step 1 of 5</div>'
+    +'<h2>Apni details daalo</h2>'
+    +'<label>Full Name</label>'
+    +'<input id="nm" placeholder="e.g. Priya Sharma" value="'+S.name+'">'
+    +'<label>WhatsApp Number</label>'
+    +'<input id="mb" type="tel" maxlength="10" inputmode="numeric" placeholder="10-digit number" value="'+S.mobile+'">'
+    +'<div class="err" id="er">Sahi 10-digit number daalo.</div>'
+    +'<button class="btn" onclick="doVerify()">Continue \u2192</button>'
+    +'</div>';
+}
+function doVerify(){
+  var n=document.getElementById('nm').value.trim();
+  var m=document.getElementById('mb').value.trim();
+  if(n.length<2||!/^\d{10}$/.test(m)){
+    document.getElementById('er').className='err show'; return;
+  }
+  S.name=n; S.mobile=m; go(1);
+}
+
+// STEP 1 — BRANCH
+function sBranch(){
+  var h='<div class="card"><div class="bk" onclick="go(0)">\u2190 Back</div>'
+    +'<div class="stag">Step 2 of 5</div><h2>Konsi branch?</h2><div class="opts">';
+  for(var i=0;i<BRANCHES.length;i++){
+    var b=BRANCHES[i];
+    var sel=(S.branch===b.key);
+    h+='<div class="opt'+(sel?' s':'')+'" data-k="'+b.key+'" onclick="pickBranch(this)">'
+      +'<div class="ic">'+b.ic+'</div>'
+      +'<div><div class="t">'+b.label+'</div></div>'
+      +'<div class="ck">'+(sel?'&#10003;':'')+'</div>'
+      +'</div>';
+  }
+  app.innerHTML=h+'</div></div>';
+}
+function pickBranch(el){
+  S.branch=el.getAttribute('data-k');
+  var b=BRANCHES;
+  for(var i=0;i<b.length;i++) if(b[i].key===S.branch) S.branchLabel=b[i].label;
+  S.batches=null; render();
+  setTimeout(function(){go(2);},160);
+}
+
+// STEP 2 — COURSE
+function sCourse(){
+  var h='<div class="card"><div class="bk" onclick="go(1)">\u2190 Back</div>'
+    +'<div class="stag">Step 3 of 5</div><h2>Konsa course?</h2><div class="opts">';
+  for(var i=0;i<COURSES.length;i++){
+    var c=COURSES[i];
+    var sel=(S.courseKey===c.key);
+    h+='<div class="opt'+(sel?' s':'')+'" data-k="'+c.key+'" onclick="pickCourse(this)">'
+      +'<div class="ic">'+c.ic+'</div>'
+      +'<div><div class="t">'+c.label+'</div><div class="d">'+c.about+'</div></div>'
+      +'<div class="ck">'+(sel?'&#10003;':'')+'</div>'
+      +'</div>';
+  }
+  app.innerHTML=h+'</div></div>';
+}
+function pickCourse(el){
+  var k=el.getAttribute('data-k');
+  S.courseKey=k; S.topicKey=''; S.topicLabel=''; S.batches=null;
+  var c=getCourse(k);
+  S.courseLabel=c.label;
+  render();
+  if(c.isOther||c.isAI){ setTimeout(function(){go(3);},160); return; }
+  if(c.topics.length===1){
+    S.topicKey=c.topics[0].key; S.topicLabel=c.topics[0].label;
+    setTimeout(function(){go(4);},160);
+  } else {
+    setTimeout(function(){go(3);},160);
+  }
+}
+
+// STEP 3 — TOPIC
+function sTopic(){
+  var c=getCourse(S.courseKey);
+  var h='<div class="card"><div class="bk" onclick="go(2)">\u2190 Back</div>'
+    +'<div class="stag">Step 4 of 5</div>';
+  if(c.isOther){
+    h+='<h2>Course ka naam batao</h2>'
+      +'<label>Course Name</label>'
+      +'<input id="cc" placeholder="e.g. AutoCAD, Hardware" value="'+S.customCourse+'">'
+      +'<label>Topic (optional)</label>'
+      +'<input id="ct" placeholder="e.g. 2D Design" value="'+S.customTopic+'">'
+      +'<button class="btn" onclick="doOther()">Continue \u2192</button>';
+  } else if(c.isAI){
+    h+='<h2>Konsa AI tool?</h2>'
+      +'<label>AI Tool ka naam</label>'
+      +'<input id="ai" placeholder="ChatGPT, Gemini, Canva AI..." value="'+S.aiTool+'">'
+      +'<div class="ai-hint"><b>Popular AI Tools:</b> ChatGPT &nbsp;&middot;&nbsp; Gemini &nbsp;&middot;&nbsp; Canva AI &nbsp;&middot;&nbsp; Midjourney &nbsp;&middot;&nbsp; DALL-E &nbsp;&middot;&nbsp; Copilot &nbsp;&middot;&nbsp; Claude &nbsp;&middot;&nbsp; Perplexity</div>'
+      +'<button class="btn" onclick="doAI()">Continue \u2192</button>';
+  } else {
+    h+='<h2>Topic chuno</h2><p class="sub">'+c.label+'</p>';
+    for(var i=0;i<c.topics.length;i++){
+      var t=c.topics[i]; var sel=(S.topicKey===t.key);
+      h+='<div class="tc'+(sel?' s':'')+'" data-k="'+t.key+'" data-l="'+t.label+'" onclick="pickTopic(this)">'
+        +'<div class="ti">&#128218;</div>'
+        +'<div style="flex:1"><div class="tn">'+t.label+'</div></div>'
+        +'<div class="ck">'+(sel?'&#10003;':'')+'</div>'
+        +'</div>';
+    }
+  }
+  app.innerHTML=h+'</div>';
+}
+function pickTopic(el){
+  S.topicKey=el.getAttribute('data-k');
+  S.topicLabel=el.getAttribute('data-l');
+  S.batches=null; render();
+  setTimeout(function(){go(4);},160);
+}
+function doOther(){
+  var v=document.getElementById('cc').value.trim();
+  if(v.length<2) return;
+  S.customCourse=v; S.customTopic=document.getElementById('ct').value.trim();
+  S.topicLabel=v; S.topicKey='other'; go(7);
+}
+function doAI(){
+  var v=document.getElementById('ai').value.trim();
+  if(!v) return;
+  S.aiTool=v; S.topicLabel=v; S.topicKey='ai-tools'; go(7);
+}
+
+// STEP 4 — BATCHES (MWF + TTS both, no filter)
+function sBatches(){
+  if(S.batches===null){
+    app.innerHTML='<div class="card"><div class="bk" onclick="go(3)">\u2190 Back</div>'
+      +'<div class="stag">Step 4 of 5</div><h2>Batches dhundh rahe hain...</h2>'
+      +'<div class="load"><div class="spin"></div><span>Schedule se data aa raha hai...</span></div></div>';
+    if(isLive()){
+      var url=branchUrl()+'?action=getBatches&topic='+encodeURIComponent(S.topicKey)+'&pattern=either';
+      fetch(url)
+        .then(function(r){return r.json();})
+        .then(function(res){S.batches=res.ok?res.batches:[];render();})
+        .catch(function(){S.batches=[];render();});
+    } else {
+      setTimeout(function(){S.batches=[];render();},600);
+    }
+    return;
+  }
+  if(!S.batches||S.batches.length===0) return go(7);
+  showBatches();
+}
+function showBatches(){
+  var h='<div class="card"><div class="bk" onclick="go(3)">\u2190 Back</div>'
+    +'<div class="stag">Step 4 of 5</div>'
+    +'<h2>Available Batches</h2>'
+    +'<p class="sub">'+S.topicLabel+' &nbsp;&bull;&nbsp; '+S.branchLabel+'</p>';
+  var list=S.batches;
+  for(var i=0;i<list.length;i++){
+    var b=list[i];
+    var left=b.max-b.filled;
+    var pct=Math.round(b.filled/b.max*100);
+    var few=left<=5;
+    var sel=(S.batchId===b.id);
+    h+='<div class="bat'+(sel?' s':'')+'" data-id="'+b.id+'" onclick="pickBatch(this)">'
+      +'<div class="r1">'
+      +'<div class="bt">'+b.time+'<span class="pat">'+b.pattern+'</span></div>'
+      +'<div class="pill '+(few?'f':'o')+'">'+(few?left+' left':'Open')+'</div>'
+      +'</div>'
+      +'<div class="meta">&#128104;&#8205;&#127979; <b>'+b.faculty+'</b> &nbsp; &#128197; Start: <b>'+b.startDate+'</b></div>'
+      +'<div class="seats">'+b.filled+'/'+b.max+' seats filled<div class="bar"><i style="width:'+pct+'%"></i></div></div>'
+      +'</div>';
+  }
+  var btnDis=S.batchId?'':'disabled';
+  h+='<button class="btn" id="gbtn" '+btnDis+' onclick="go(5)">Confirm Batch \u2192</button>';
+  app.innerHTML=h+'</div>';
+}
+function pickBatch(el){
+  S.batchId=el.getAttribute('data-id');
+  render();
+}
+
+// STEP 5 — CONFIRM
+function sConfirm(){
+  var b=null;
+  if(S.batches) for(var i=0;i<S.batches.length;i++) if(S.batches[i].id===S.batchId){b=S.batches[i];break;}
+  b=b||{};
+  app.innerHTML='<div class="card"><div class="bk" onclick="go(4)">\u2190 Back</div>'
+    +'<div class="stag">Step 5 of 5</div><h2>Confirm karo</h2>'
+    +'<div class="sm">'
+    +'<div class="ln"><span>Name</span><b>'+S.name+'</b></div>'
+    +'<div class="ln"><span>Mobile</span><b>'+S.mobile+'</b></div>'
+    +'<div class="ln"><span>Branch</span><b>'+S.branchLabel+'</b></div>'
+    +'<div class="ln"><span>Topic</span><b>'+S.topicLabel+'</b></div>'
+    +'<div class="ln"><span>Batch</span><b>'+(b.pattern||'')+'</b></div>'
+    +'<div class="ln"><span>Timing</span><b>'+(b.time||'')+'</b></div>'
+    +'<div class="ln"><span>Faculty</span><b>'+(b.faculty||'')+'</b></div>'
+    +'<div class="ln"><span>Start Date</span><b>'+(b.startDate||'')+'</b></div>'
+    +'</div>'
+    +'<button class="btn" id="cfbtn" onclick="doConfirm()">Confirm My Seat &#10003;</button>'
+    +'</div>';
+}
+function doConfirm(){
+  document.getElementById('cfbtn').disabled=true;
+  document.getElementById('cfbtn').textContent='Saving...';
+  var b=null;
+  if(S.batches) for(var i=0;i<S.batches.length;i++) if(S.batches[i].id===S.batchId){b=S.batches[i];break;}
+  b=b||{};
+  var c=getCourse(S.courseKey);
+  if(isLive()){
+    var p=encodeURIComponent;
+    var url=branchUrl()
+      +'?action=confirmBooking'
+      +'&name='+p(S.name)+'&mobile='+p(S.mobile)
+      +'&course='+p(c.label||S.courseKey)
+      +'&topic='+p(S.topicKey)+'&topicName='+p(S.topicLabel)
+      +'&pattern='+p(b.pattern||'')+'&timing='+p(b.time||'')
+      +'&faculty='+p(b.faculty||'')
+      +'&startDate='+p(b.startDate||'')+'&endDate='+p(b.endDate||'');
+    fetch(url).then(function(){go(6);}).catch(function(){go(6);});
+  } else { go(6); }
+}
+
+// STEP 6 — SUCCESS
+function sSuccess(){
+  var b=null;
+  if(S.batches) for(var i=0;i<S.batches.length;i++) if(S.batches[i].id===S.batchId){b=S.batches[i];break;}
+  b=b||{};
+  app.innerHTML='<div class="card suc">'
+    +'<div class="tick">&#10003;</div>'
+    +'<h2>Seat confirmed! &#127881;</h2>'
+    +'<p class="sub">'+S.name.split(' ')[0]+', tumhari <b>'+S.topicLabel+'</b> seat '+(b.pattern||'')+' ('+(b.time||'')+') mein book ho gayi!</p>'
+    +'<div class="code">BK &middot; '+S.branchLabel+' &middot; '+S.mobile.slice(-4)+'</div>'
+    +'<p class="wn">&#128242; WhatsApp pe confirmation aayega '+S.mobile+' par.</p>'
+    +'<button class="btn g" onclick="reset()">New Booking</button>'
+    +'</div>';
+}
+
+// STEP 7 — NO BATCH
+function sNoBatch(){
+  app.innerHTML='<div class="card"><div class="bk" onclick="go(3)">\u2190 Back</div>'
+    +'<div class="emp">'
+    +'<div class="ej">&#128203;</div>'
+    +'<h3>Koi batch available nahi</h3>'
+    +'<p><b>'+S.topicLabel+'</b> ka batch '+S.branchLabel+' mein abhi schedule nahi hai.</p>'
+    +'</div>'
+    +'<label>Comment (optional)</label>'
+    +'<textarea id="cmt" >'+S.comment+'</textarea>'
+    +'<button class="btn" onclick="doRequest()">Notify Me &mdash; Batch aane par batao</button>'
+    +'<button class="btn g" onclick="go(2)">Doosra course dekho</button>'
+    +'</div>';
+}
+function doRequest(){
+  S.comment=document.getElementById('cmt').value.trim();
+  var btn=document.querySelector('#app .btn');
+  if(btn) btn.disabled=true;
+  var c=getCourse(S.courseKey);
+  if(isLive()){
+    var p=encodeURIComponent;
+    var url=branchUrl()
+      +'?action=addRequest'
+      +'&name='+p(S.name)+'&mobile='+p(S.mobile)
+      +'&course='+p(c.label||S.customCourse||S.courseKey)
+      +'&topic='+p(S.topicKey)+'&topicName='+p(S.topicLabel)
+      +'&customCourse='+p(S.customCourse||'')
+      +'&customTopic='+p(S.customTopic||S.aiTool||'')
+      +'&pattern=either&preferredTime='+p(S.comment||'');
+    fetch(url).then(function(){go(8);}).catch(function(){go(8);});
+  } else { go(8); }
+}
+
+// STEP 8 — REQUEST DONE
+function sDone(){
+  app.innerHTML='<div class="card suc">'
+    +'<div class="tick bl">&#9203;</div>'
+    +'<h2>Request save ho gayi!</h2>'
+    +'<p class="sub">'+S.name.split(' ')[0]+', <b>'+S.topicLabel+'</b> ke liye tumhari request '+S.branchLabel+' mein save ho gayi.</p>'
+    +'<div class="code">WL-'+S.mobile.slice(-4)+(Math.floor(Math.random()*9000)+1000)+'</div>'
+    +'<p class="wn">&#128242; Batch schedule hone par WhatsApp pe notify karenge '+S.mobile+' par.</p>'
+    +'<button class="btn g" onclick="reset()">New Request</button>'
+    +'</div>';
+}
+
+function reset(){
+  S={step:0,name:'',mobile:'',branch:'',branchLabel:'',courseKey:'',topicKey:'',topicLabel:'',
+     courseLabel:'',customCourse:'',customTopic:'',aiTool:'',batches:null,batchId:'',comment:''};
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
